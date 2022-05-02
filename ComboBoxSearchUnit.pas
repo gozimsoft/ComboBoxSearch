@@ -78,15 +78,20 @@ begin
       Items.Clear;
       // iterate through all of them
       for i := 0 to FStoredItems.Count - 1 do
-        // check if the current one contains the text in edit
         if ContainsText(FStoredItems[i], Text) then
-          // and if so, then add it to the items
-          Items.Add(FStoredItems[i]);
+        begin
+          if Assigned(FStoredItems.Objects[i]) then
+            Items.AddObject(FStoredItems[i], FStoredItems.Objects[i])
+          else
+            Items.Add(FStoredItems[i]);
+        end;
     end
-    // else the combo edit is empty
     else
-      // so then we'll use all what we have in the FStoredItems
+    // so then we'll use all what we have in the FStoredItems
+    begin
+      Items.Clear;
       Items.Assign(FStoredItems);
+    end;
 
     if Items.Count > 0 then
       if Text <> EmptyStr then
